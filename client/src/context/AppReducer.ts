@@ -1,11 +1,30 @@
-export default (state: any, action: any) => {
+export const Actions = {
+  GET_TRANSACTIONS: "GET_TRANSACTIONS",
+  TRANSACTIONS_ERROR: "TRANSACTIONS_ERROR",
+  ADD_TRANSACTION: "ADD_TRANSACTION",
+  DELETE_TRANSACTION: "DELETE_TRANSACTION",
+};
+
+const AppReducer = (state: any, action: any) => {
   switch (action.type) {
-    case "ADD_TRANSACTION":
+    case Actions.GET_TRANSACTIONS:
       return {
         ...state,
-        transactions: [action.payload, ...state.transactions],
+        loading: false,
+        transactions: action.payload,
       };
-    case "DELETE_TRANSACTION":
+    case Actions.TRANSACTIONS_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+    case Actions.ADD_TRANSACTION:
+      return {
+        ...state,
+        transactions: [...state.transactions, action.payload],
+      };
+    case Actions.DELETE_TRANSACTION:
       return {
         ...state,
         transactions: state.transactions.filter(
@@ -16,3 +35,4 @@ export default (state: any, action: any) => {
       return state;
   }
 };
+export default AppReducer;

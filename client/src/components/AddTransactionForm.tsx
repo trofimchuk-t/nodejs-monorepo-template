@@ -9,7 +9,6 @@ export const AddTransactionForm = () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newTransaction = {
-      id: Math.floor(Math.random() * 100000000),
       text,
       amount,
     };
