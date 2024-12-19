@@ -11,7 +11,8 @@
   "scripts": {
     "dev:client": "yarn --cwd ./client start",
     "dev:server": "yarn --cwd ./server server",
-    "dev": "concurrently \"yarn run dev:server\" \"yarn run dev:client\""
+    "dev": "concurrently \"yarn run dev:server\" \"yarn run dev:client\"",
+    "prepare": "husky"
   },
   "volta": {
     "node": "23.4.0",
@@ -20,7 +21,12 @@
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.4.0",
     "concurrently": "^9.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
     "prettier": "3.4.2",
     "prettier-plugin-jsdoc": "^1.3.0"
+  },
+  "lint-staged": {
+    "**/*": "prettier --check --ignore-unknown"
   }
 }
