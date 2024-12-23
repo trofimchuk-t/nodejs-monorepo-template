@@ -7,8 +7,6 @@
 	"jsxSingleQuote": true,
 	"endOfLine": "auto",
 	"importOrder": ["^@/(.*)$", "^[./]"],
-	"importOrderSeparation": true,
-	"importOrderSortSpecifiers": true,
 	"importOrderParserPlugins": [
 		"jsx",
 		"typescript",
