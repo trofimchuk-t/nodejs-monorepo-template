@@ -1,9 +1,11 @@
 // https://blog.logrocket.com/how-to-set-up-node-typescript-express/
 
+import 'express-async-errors';
 import colors from 'colors';
 import dotenv from 'dotenv';
 import express, { Express } from 'express';
 import morgan from 'morgan';
+import { errorHandler, notFound } from './middleware/errorMiddleware';
 import router from './routes/transactions';
 
 dotenv.config({ path: './config/config.env' });
@@ -16,6 +18,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use('/api/v1/transactions', router);
+
+app.use(notFound);
+app.use(errorHandler);
 
 const port = process.env.PORT || 5001;
 
