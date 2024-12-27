@@ -1,9 +1,9 @@
 import { useContext } from 'react';
-import { GlobalContext } from '../context/GlobalState';
+import { TransactionsContext } from '../context/TransactionsContext';
 import { Transaction } from '../types/Transaction';
 
 export const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
-	const { deleteTransaction } = useContext(GlobalContext);
+	const { deleteTransaction } = useContext(TransactionsContext);
 	const sign = transaction.amount < 0 ? '-' : '';
 
 	return (

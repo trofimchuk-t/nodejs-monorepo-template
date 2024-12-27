@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react';
-import { GlobalContext } from '../context/GlobalState';
+import { TransactionsContext } from '../context/TransactionsContext';
 
 export const AddTransactionForm = () => {
-	const { addTransaction } = useContext(GlobalContext);
+	const { addTransaction } = useContext(TransactionsContext);
 	const [text, setText] = useState('');
 	const [amount, setAmount] = useState(0);
 

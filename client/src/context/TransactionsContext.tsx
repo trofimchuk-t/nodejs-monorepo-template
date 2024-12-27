@@ -1,13 +1,7 @@
 import axios from 'axios';
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useMemo, useReducer } from 'react';
 import { Transaction } from '../types/Transaction';
-import AppReducer, { Actions } from './AppReducer';
-
-interface State {
-	transactions: Transaction[];
-	error: any;
-	loading: boolean;
-}
+import TransactionsReducer, { ActionType, TransactionState } from './TransactionsReducer';
 
 interface Context {
 	transactions: Transaction[];
@@ -19,30 +13,31 @@ interface Context {
 }
 
 // Initial State
-const initialState: State = {
+const initialState: TransactionState = {
 	transactions: [],
 	error: null,
 	loading: true,
 };
 
 // Create context
-export const GlobalContext = createContext<Context>(initialState as any);
+export const TransactionsContext = createContext<Context>(null!);
 
 // Provider component
-export const GlobalProvider = ({ children }: React.PropsWithChildren) => {
-	const [state, dispatch] = useReducer(AppReducer, initialState);
+export const TransactionsProvider = ({ children }: React.PropsWithChildren) => {
+	const [state, dispatch] = useReducer(TransactionsReducer, initialState);
 
 	// Actions
 	async function getTransactions() {
 		try {
 			const response = await axios.get('/api/v1/transactions');
+
 			dispatch({
-				type: Actions.GET_TRANSACTIONS,
+				type: ActionType.GET_TRANSACTIONS,
 				payload: response.data.data,
 			});
 		} catch (err: any) {
 			dispatch({
-				type: Actions.TRANSACTIONS_ERROR,
+				type: ActionType.TRANSACTIONS_ERROR,
 				payload: err.response.data.error,
 			});
 		}
@@ -51,13 +46,14 @@ export const GlobalProvider = ({ children }: React.PropsWithChildren) => {
 	async function deleteTransaction(id: number) {
 		try {
 			await axios.delete(`/api/v1/transactions/${id}`);
+
 			dispatch({
-				type: Actions.DELETE_TRANSACTION,
-				payload: id,
+				type: ActionType.DELETE_TRANSACTION,
+				payload: { id },
 			});
 		} catch (err: any) {
 			dispatch({
-				type: Actions.TRANSACTIONS_ERROR,
+				type: ActionType.TRANSACTIONS_ERROR,
 				payload: err.response.data.error,
 			});
 		}
@@ -69,32 +65,33 @@ export const GlobalProvider = ({ children }: React.PropsWithChildren) => {
 				'Content-Type': 'application/json',
 			},
 		};
+
 		try {
 			const response = await axios.post('/api/v1/transactions', transaction, config);
+
 			dispatch({
-				type: 'ADD_TRANSACTION',
+				type: ActionType.ADD_TRANSACTION,
 				payload: response.data.data,
 			});
 		} catch (err: any) {
 			dispatch({
-				type: 'TRANSACTIONS_ERROR',
+				type: ActionType.TRANSACTIONS_ERROR,
 				payload: err.response.data.error,
 			});
 		}
 	}
 
-	return (
-		<GlobalContext.Provider
-			value={{
-				transactions: state.transactions,
-				error: state.error,
-				loading: state.loading,
-				getTransactions,
-				deleteTransaction,
-				addTransaction,
-			}}
-		>
-			{children}
-		</GlobalContext.Provider>
+	const contextObj = useMemo(
+		() => ({
+			transactions: state.transactions,
+			error: state.error,
+			loading: state.loading,
+			getTransactions,
+			deleteTransaction,
+			addTransaction,
+		}),
+		[state.error, state.loading, state.transactions],
 	);
+
+	return <TransactionsContext.Provider value={contextObj}>{children}</TransactionsContext.Provider>;
 };
