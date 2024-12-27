@@ -1,6 +1,7 @@
 // https://blog.logrocket.com/how-to-set-up-node-typescript-express/
 
 import 'express-async-errors';
+import path from 'path';
 import colors from 'colors';
 import dotenv from 'dotenv';
 import express, { Express } from 'express';
@@ -18,6 +19,12 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use('/api/v1/transactions', router);
+
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static('../client/build'));
+
+	app.get('*', (_req, res) => res.sendFile(path.resolve(__dirname, '/../../client', 'build', 'index.html')));
+}
 
 app.use(notFound);
 app.use(errorHandler);

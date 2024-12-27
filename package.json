@@ -9,9 +9,13 @@
 		"server"
 	],
 	"scripts": {
-		"dev:client": "yarn --cwd ./client start",
-		"dev:server": "yarn --cwd ./server server",
+		"dev:client": "yarn workspace test-app-client start",
+		"dev:server": "yarn workspace test-app-server server",
 		"dev": "concurrently \"yarn run dev:server\" \"yarn run dev:client\"",
+		"build:client": "yarn workspace test-app-client build",
+		"build:server": "yarn workspace test-app-server build",
+		"build:all": "yarn run build:client && yarn run build:server",
+		"start": "yarn workspace test-app-server start",
 		"prepare": "husky"
 	},
 	"volta": {
@@ -23,6 +27,7 @@
 		"@typescript-eslint/eslint-plugin": "^8.18.1",
 		"@typescript-eslint/parser": "^8.18.1",
 		"concurrently": "^9.1.0",
+		"cross-env": "^7.0.3",
 		"eslint": "8.x.x",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-jest": "^28.10.0",
