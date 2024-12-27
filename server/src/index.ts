@@ -35,3 +35,14 @@ app.listen(port, () =>
 	// eslint-disable-next-line no-console
 	console.log(colors.yellow.bold(`Server running in ${process.env.NODE_ENV} mode on port ${port}`)),
 );
+
+const exitHandler = () => {
+	// eslint-disable-next-line no-console
+	console.log(colors.yellow.bold('Server has been stopped'));
+	process.exit();
+};
+
+process.on('SIGINT', exitHandler);
+process.on('SIGHUP', exitHandler);
+process.on('SIGTERM', exitHandler);
+process.on('SIGUSR2', exitHandler);
