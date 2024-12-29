@@ -6,7 +6,9 @@
 		"build": "tsc",
 		"start": "cross-env NODE_ENV=production node dist/index.js",
 		"server": "nodemon --signal SIGHUP src/index.ts",
-		"tsc": "tsc"
+		"tsc": "tsc",
+		"format": "prettier . --check",
+		"lint": "eslint ."
 	},
 	"devDependencies": {
 		"@types/express": "^5.0.0",

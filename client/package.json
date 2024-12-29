@@ -20,7 +20,9 @@
 		"start": "cross-env DISABLE_ESLINT_PLUGIN=true react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"format": "prettier . --check",
+		"lint": "eslint ."
 	},
 	"browserslist": {
 		"production": [

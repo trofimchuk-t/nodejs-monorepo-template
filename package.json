@@ -16,6 +16,8 @@
 		"build:server": "yarn workspace test-app-server build",
 		"build:all": "yarn run build:client && yarn run build:server",
 		"start": "yarn workspace test-app-server start",
+		"format": "prettier . --check",
+		"lint": "eslint .",
 		"prepare": "husky"
 	},
 	"volta": {
