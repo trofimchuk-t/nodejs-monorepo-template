@@ -414,3 +414,24 @@ Then press `F5` (or click the green arrow) to launch the debugger and open a new
 In the same way, you can run the server in debug mode by selecting the `Debug Server app` configuration and pressing `F5` (or clicking the green arrow).
 
 [[see commit changes]](https://github.com/trofimchuk-t/nodejs-monorepo-template/commit/52364463f3bea78955f0e1c8c302379ba2f26a71)
+
+## 13. Add MongoDB
+
+**Prerequisites:** create a MongoDB Atlas account and a new cluster. Follow the instructions at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). Get the connection string.
+
+Install `mongoose` package:
+
+```bash
+yarn workspace test-app-server add mongoose
+```
+
+Change the `server.ts` file to connect/disconnect to MongoDB.  
+Update model property from `id` to `_id`.  
+Update controllers and components to use MongoDB.  
+Add `MONGO_URI` variable to the `config.env` file. Update the `.env` file with the MongoDB connection string.
+
+Run the app:
+
+```bash
+yarn dev
+```

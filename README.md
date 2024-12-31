@@ -19,6 +19,7 @@ Based on [Traversy Media tutorial](https://www.youtube.com/watch?v=XuFDcZABiDQ).
 - [Volta](https://docs.volta.sh/guide/) (Node.js/Yarn version manager)
 - Package.json [workspaces](https://classic.yarnpkg.com/lang/en/docs/workspaces/) (allows managing dependencies and running both client and server with a single command from the root folder)
 - [Prettier](https://prettier.io/docs/en/install.html) (code formatting) + [ESLint](https://eslint.org/docs/latest/use/getting-started) (code linting with different configs for client and server) + [Husky](https://github.com/typicode/husky) (pre-commit hooks)
+- MongoDB (document database)
 
 > To see step-by-step guide how to create this app from scratch, check the [step-by-step guide](Guide.md).
 
@@ -27,6 +28,10 @@ Based on [Traversy Media tutorial](https://www.youtube.com/watch?v=XuFDcZABiDQ).
 ### Prerequisites
 
 Follow [these instructions](https://docs.volta.sh/guide/getting-started) to install Volta. Volta manages Node and Yarn versions automatically.
+
+You should have a connection to a MongoDB database. You can use a local MongoDB instance or a cloud-based service like MongoDB Atlas.
+
+Create a `config.env` file (based on `config.env.template`) in the server app and replace the `MONGO_URI` value with your MongoDB connection string.
 
 ### Install dependencies and run the app:
 

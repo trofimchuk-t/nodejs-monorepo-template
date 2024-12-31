@@ -22,7 +22,7 @@ type TransactionAction =
 	| Action<ActionType.GET_TRANSACTIONS, Transaction[]>
 	| Action<ActionType.TRANSACTIONS_ERROR, string>
 	| Action<ActionType.ADD_TRANSACTION, Transaction>
-	| Action<ActionType.DELETE_TRANSACTION, Pick<Transaction, 'id'>>;
+	| Action<ActionType.DELETE_TRANSACTION, Pick<Transaction, '_id'>>;
 
 const TransactionsReducer = (state: TransactionState, action: TransactionAction): TransactionState => {
 	switch (action.type) {
@@ -47,7 +47,7 @@ const TransactionsReducer = (state: TransactionState, action: TransactionAction)
 			return {
 				...state,
 				transactions: state.transactions.filter(
-					(transaction: Transaction) => transaction.id !== action.payload.id,
+					(transaction: Transaction) => transaction._id !== action.payload._id,
 				),
 			};
 		default:

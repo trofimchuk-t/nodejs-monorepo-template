@@ -6,10 +6,13 @@ import colors from 'colors';
 import dotenv from 'dotenv';
 import express, { Express } from 'express';
 import morgan from 'morgan';
+import { connectDb, disconnectDb } from './config/db';
 import { errorHandler, notFound } from './middleware/errorMiddleware';
 import router from './routes/transactions';
 
 dotenv.config({ path: './config/config.env' });
+
+connectDb();
 
 const app: Express = express();
 app.use(express.json());
@@ -37,9 +40,13 @@ app.listen(port, () =>
 );
 
 const exitHandler = () => {
-	// eslint-disable-next-line no-console
-	console.log(colors.yellow.bold('Server has been stopped'));
-	process.exit();
+	disconnectDb()
+		.catch()
+		.then(() => {
+			// eslint-disable-next-line no-console
+			console.log(colors.yellow.bold('Server has been stopped'));
+			process.exit();
+		});
 };
 
 process.on('SIGINT', exitHandler);

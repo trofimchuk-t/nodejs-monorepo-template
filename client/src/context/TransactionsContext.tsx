@@ -9,7 +9,7 @@ interface Context {
 	loading: boolean;
 	getTransactions: () => Promise<void>;
 	deleteTransaction: (id: number) => Promise<void>;
-	addTransaction: (transaction: Omit<Transaction, 'id'>) => Promise<void>;
+	addTransaction: (transaction: Omit<Transaction, '_id'>) => Promise<void>;
 }
 
 // Initial State
@@ -49,7 +49,7 @@ export const TransactionsProvider = ({ children }: React.PropsWithChildren) => {
 
 			dispatch({
 				type: ActionType.DELETE_TRANSACTION,
-				payload: { id },
+				payload: { _id: id },
 			});
 		} catch (err: any) {
 			dispatch({
@@ -59,7 +59,7 @@ export const TransactionsProvider = ({ children }: React.PropsWithChildren) => {
 		}
 	}
 
-	async function addTransaction(transaction: Omit<Transaction, 'id'>) {
+	async function addTransaction(transaction: Omit<Transaction, '_id'>) {
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
