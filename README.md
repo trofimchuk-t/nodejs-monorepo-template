@@ -20,6 +20,8 @@ Based on [Traversy Media tutorial](https://www.youtube.com/watch?v=XuFDcZABiDQ).
 - Package.json [workspaces](https://classic.yarnpkg.com/lang/en/docs/workspaces/) (allows managing dependencies and running both client and server with a single command from the root folder)
 - [Prettier](https://prettier.io/docs/en/install.html) (code formatting) + [ESLint](https://eslint.org/docs/latest/use/getting-started) (code linting with different configs for client and server) + [Husky](https://github.com/typicode/husky) (pre-commit hooks)
 
+> To see step-by-step guide how to create this app from scratch, check the [step-by-step guide](Guide.md).
+
 ## Getting Started
 
 ### Prerequisites
