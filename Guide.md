@@ -54,7 +54,7 @@ It should open a new browser window at http://localhost:3000/ with the React app
 
 #### 2.2. Add basic components
 
-Add necessary components, providers, update styles, etc.  
+Add necessary components, providers, update styles, etc.
 [[see commit changes]](https://github.com/trofimchuk-t/nodejs-monorepo-template/commit/34e839855aad8e200eb83d4e224de76f685cc6ae)
 
 #### 2.3. Move Frontend Files to `client` subfolder
@@ -87,10 +87,10 @@ yarn add nodemon -D
 yarn add express colors dotenv morgan
 ```
 
-**nodemon**: automatically restarting the node application when file changes in the directory are detected  
-**express**: web framework  
-**colors**: get color and style in your node.js console  
-**dotenv**: loads environment variables from a .env file into process.env  
+**nodemon**: automatically restarting the node application when file changes in the directory are detected
+**express**: web framework
+**colors**: get color and style in your node.js console
+**dotenv**: loads environment variables from a .env file into process.env
 **morgan**: HTTP request logger middleware for node.js
 
 Add necessary components and initialize an app in the `server.js` file. Create a `config` folder with a `config.env` file.
@@ -120,7 +120,7 @@ cd client
 yarn add axios
 ```
 
-Update client components to be able to call a server API.  
+Update client components to be able to call a server API.
 To tell the development server to proxy any unknown requests to your API server in development, add a `proxy` field to the client `package.json` file.
 
 Make sure the server is running and start the client app:
@@ -157,7 +157,7 @@ In the root project folder, create a root `package.json` file:
 yarn init
 ```
 
-Add `volta` sections to `package.json` files.  
+Add `volta` sections to `package.json` files.
 Add scripts section to the root `package.json` file. To be able to start both client and server apps with a single command, install `concurrently` and add a `dev` script:
 
 ```bash
@@ -210,7 +210,7 @@ yarn install
 
 Add an `.editorconfig` file to the root project folder.
 
-[Prettier](https://prettier.io/) removes all original styling and ensures that all outputted code conforms to a consistent style. It applies formatting rules **after** writing code.  
+[Prettier](https://prettier.io/) removes all original styling and ensures that all outputted code conforms to a consistent style. It applies formatting rules **after** writing code.
 Follow the instructions to install and configure [Prettier](https://prettier.io/docs/en/install):
 
 ```bash
@@ -312,7 +312,7 @@ yarn workspace test-app-server add --dev ts-node
 yarn workspace test-app-server add --dev @types/node @types/morgan @types/express
 ```
 
-Rename `server.js` to `index.js`, change extensions for source files to `.ts`, move source files to `/src` subfolder, and fix TypeScript errors.  
+Rename `server.js` to `index.js`, change extensions for source files to `.ts`, move source files to `/src` subfolder, and fix TypeScript errors.
 Update `.gitignore` to exclude build artifacts.
 
 Build the app:
@@ -351,7 +351,7 @@ Add dependency:
 yarn workspace test-app-server add express-async-errors
 ```
 
-Create error models and error middleware.  
+Create error models and error middleware.
 Import `express-async-errors` and register middleware in the `server.ts` file.
 
 [[see commit changes]](https://github.com/trofimchuk-t/nodejs-monorepo-template/commit/a5c6421ecac65a3e839a238fbf5151001916ea15)
@@ -364,7 +364,7 @@ Add `cross-env` package to set environment variables:
 yarn add --dev cross-env -W
 ```
 
-Update `index.ts` file to serve the client app in production mode.  
+Update `index.ts` file to serve the client app in production mode.
 Add useful scripts to the root `package.json` file to build apps and start the server in production mode.
 
 To run the app:
@@ -388,7 +388,7 @@ yarn start
 
 #### 11.4. Add Exit Handler
 
-Add `exitHandler` to gracefully shutdown the server when the app is terminated.  
+Add `exitHandler` to gracefully shutdown the server when the app is terminated.
 Update the startup script and add the `nodemon --signal SIGHUP` option to gracefully shutdown the app when nodemon restarts due to file changes.
 
 [[see commit changes]](https://github.com/trofimchuk-t/nodejs-monorepo-template/commit/d4d2c28782d14572c50cd322a8a70fadf8ecc24c)
@@ -414,3 +414,20 @@ Then press `F5` (or click the green arrow) to launch the debugger and open a new
 In the same way, you can run the server in debug mode by selecting the `Debug Server app` configuration and pressing `F5` (or clicking the green arrow).
 
 [[see commit changes]](https://github.com/trofimchuk-t/nodejs-monorepo-template/commit/52364463f3bea78955f0e1c8c302379ba2f26a71)
+
+## 13. Use Redux Toolkit as a State Manager
+
+Install [Redux Toolkit](https://redux.js.org/introduction/installation) and [react-redux](https://react-redux.js.org/introduction/getting-started) packages:
+
+```bash
+yarn workspace test-app-client add @reduxjs/toolkit
+yarn workspace test-app-client add react-redux
+```
+
+Create `transactionsSlice.ts` file with a slice for transactions.\
+Add async actions, add selectors to precompute derived state.\
+Add `store.ts` file with a store configuration.\
+Create `hooks.ts` with custom typed hooks to access the store and dispatch actions.\
+Update components to use custom selectors and dispatch actions.
+
+For more information, please follow https://redux.js.org/usage/configuring-your-store/.

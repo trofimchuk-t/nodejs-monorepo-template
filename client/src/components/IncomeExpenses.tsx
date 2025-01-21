@@ -1,16 +1,9 @@
-import { useContext } from 'react';
-import { TransactionsContext } from '../context/TransactionsContext';
+import { selectTotalExpense, selectTotalIncome } from '../reducers/transactionsSlice';
+import { useAppSelector } from '../store/hooks';
 
 export const IncomeExpenses = () => {
-	const { transactions } = useContext(TransactionsContext);
-
-	const amounts = transactions.map((transaction) => transaction.amount);
-	const income = amounts
-		.filter((item) => item > 0)
-		.reduce((acc, item) => (acc += item), 0)
-		.toFixed(2);
-
-	const expense = (amounts.filter((item) => item < 0).reduce((acc, item) => (acc += item), 0) * -1).toFixed(2);
+	const income = useAppSelector(selectTotalIncome);
+	const expense = useAppSelector(selectTotalExpense);
 
 	return (
 		<div className='inc-exp-container'>

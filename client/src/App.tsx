@@ -1,14 +1,15 @@
+import { Provider } from 'react-redux';
 import './App.css';
 import { AddTransactionForm } from './components/AddTransactionForm';
 import { Balance } from './components/Balance';
 import { Header } from './components/Header';
 import { IncomeExpenses } from './components/IncomeExpenses';
 import { TransactionList } from './components/TransactionList';
-import { TransactionsProvider } from './context/TransactionsContext';
+import { store } from './store/store';
 
 function App() {
 	return (
-		<TransactionsProvider>
+		<Provider store={store}>
 			<Header />
 			<div className='container'>
 				<Balance />
@@ -16,7 +17,7 @@ function App() {
 				<TransactionList />
 				<AddTransactionForm />
 			</div>
-		</TransactionsProvider>
+		</Provider>
 	);
 }
 

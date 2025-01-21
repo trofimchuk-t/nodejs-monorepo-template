@@ -1,8 +1,10 @@
-import { useContext, useState } from 'react';
-import { TransactionsContext } from '../context/TransactionsContext';
+import { useState } from 'react';
+import { addTransactionAsync } from '../reducers/transactionsSlice';
+import { useAppDispatch } from '../store/hooks';
 
 export const AddTransactionForm = () => {
-	const { addTransaction } = useContext(TransactionsContext);
+	const dispatch = useAppDispatch();
+
 	const [text, setText] = useState('');
 	const [amount, setAmount] = useState(0);
 
@@ -12,9 +14,15 @@ export const AddTransactionForm = () => {
 			text,
 			amount,
 		};
-		addTransaction(newTransaction);
-		setText('');
-		setAmount(0);
+
+		// https://redux-toolkit.js.org/api/createAsyncThunk#handling-thunk-results
+		dispatch(addTransactionAsync(newTransaction))
+			.unwrap()
+			.then(() => {
+				setText('');
+				setAmount(0);
+			})
+			.catch(() => {});
 	};
 
 	return (

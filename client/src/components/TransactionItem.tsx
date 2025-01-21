@@ -1,9 +1,9 @@
-import { useContext } from 'react';
-import { TransactionsContext } from '../context/TransactionsContext';
+import { deleteTransactionAsync } from '../reducers/transactionsSlice';
+import { useAppDispatch } from '../store/hooks';
 import { Transaction } from '../types/Transaction';
 
 export const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
-	const { deleteTransaction } = useContext(TransactionsContext);
+	const dispatch = useAppDispatch();
 	const sign = transaction.amount < 0 ? '-' : '';
 
 	return (
@@ -12,7 +12,7 @@ export const TransactionItem = ({ transaction }: { transaction: Transaction }) =
 			<span>
 				{sign}${Math.abs(transaction.amount)}
 			</span>
-			<button onClick={() => deleteTransaction(transaction.id)} className='delete-btn'>
+			<button onClick={() => dispatch(deleteTransactionAsync(transaction.id))} className='delete-btn'>
 				x
 			</button>
 		</li>

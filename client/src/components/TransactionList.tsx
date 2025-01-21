@@ -1,12 +1,14 @@
-import { useContext, useEffect } from 'react';
-import { TransactionsContext } from '../context/TransactionsContext';
+import { useEffect } from 'react';
+import { getTransactionsAsync } from '../reducers/transactionsSlice';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { TransactionItem } from './TransactionItem';
 
 export const TransactionList = () => {
-	const { transactions, loading, error, getTransactions } = useContext(TransactionsContext);
+	const { transactions, loading, error } = useAppSelector((state) => state.transactions);
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		getTransactions();
+		dispatch(getTransactionsAsync());
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
