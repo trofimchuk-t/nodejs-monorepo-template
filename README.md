@@ -21,6 +21,8 @@ Based on [Traversy Media tutorial](https://www.youtube.com/watch?v=XuFDcZABiDQ).
 - [Prettier](https://prettier.io/docs/en/install.html) (code formatting) + [ESLint](https://eslint.org/docs/latest/use/getting-started) (code linting with different configs for client and server) + [Husky](https://github.com/typicode/husky) (pre-commit hooks)
 
 For additional features, check `feature/*` branches. Currently available:
+
+- [feature/redux](https://github.com/trofimchuk-t/nodejs-monorepo-template/tree/feature/redux) - Redux integration for state management
 - [feature/mongodb](https://github.com/trofimchuk-t/nodejs-monorepo-template/tree/feature/mongodb) - MongoDB integration for storing transactions
 - feature/sqllite - TODO: SQLite integration for storing transactions
 
