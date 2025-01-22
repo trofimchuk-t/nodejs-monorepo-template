@@ -1,8 +1,9 @@
+import { observer } from 'mobx-react-lite';
 import { useContext, useState } from 'react';
 import { TransactionsContext } from '../context/TransactionsContext';
 
-export const AddTransactionForm = () => {
-	const { addTransaction } = useContext(TransactionsContext);
+export const AddTransactionForm = observer(() => {
+	const ctx = useContext(TransactionsContext);
 	const [text, setText] = useState('');
 	const [amount, setAmount] = useState(0);
 
@@ -12,7 +13,7 @@ export const AddTransactionForm = () => {
 			text,
 			amount,
 		};
-		addTransaction(newTransaction);
+		ctx.addTransaction(newTransaction);
 		setText('');
 		setAmount(0);
 	};
@@ -46,4 +47,4 @@ export const AddTransactionForm = () => {
 			</form>
 		</>
 	);
-};
+});

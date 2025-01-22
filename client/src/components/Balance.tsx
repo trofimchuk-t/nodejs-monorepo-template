@@ -1,16 +1,14 @@
+import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 import { TransactionsContext } from '../context/TransactionsContext';
 
-export const Balance = () => {
-	const { transactions } = useContext(TransactionsContext);
-
-	const amounts = transactions.map((transaction) => transaction.amount);
-	const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
+export const Balance = observer(() => {
+	const ctx = useContext(TransactionsContext);
 
 	return (
 		<>
 			<h4>Your Balance</h4>
-			<h1>${total}</h1>
+			<h1>${ctx.totalAmount}</h1>
 		</>
 	);
-};
+});

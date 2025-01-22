@@ -3,7 +3,7 @@ import { TransactionsContext } from '../context/TransactionsContext';
 import { Transaction } from '../types/Transaction';
 
 export const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
-	const { deleteTransaction } = useContext(TransactionsContext);
+	const ctx = useContext(TransactionsContext);
 	const sign = transaction.amount < 0 ? '-' : '';
 
 	return (
@@ -12,7 +12,7 @@ export const TransactionItem = ({ transaction }: { transaction: Transaction }) =
 			<span>
 				{sign}${Math.abs(transaction.amount)}
 			</span>
-			<button onClick={() => deleteTransaction(transaction.id)} className='delete-btn'>
+			<button onClick={() => ctx.deleteTransaction(transaction.id)} className='delete-btn'>
 				x
 			</button>
 		</li>
