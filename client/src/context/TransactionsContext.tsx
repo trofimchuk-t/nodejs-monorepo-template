@@ -1,4 +1,5 @@
-import { Instance, types } from 'mobx-state-tree';
+import axios from 'axios';
+import { flow, Instance, types } from 'mobx-state-tree';
 import { createContext } from 'react';
 
 const TransactionModel = types.model({
@@ -34,34 +35,63 @@ const TransactionsStore = types
 		},
 	}))
 	.actions((self) => ({
-		addTransaction(item: Omit<ITransaction, 'id'>) {
-			self.transactions.push(
-				TransactionModel.create({
-					id: self.transactions.reduce((a, b) => Math.max(a, b.id), 0) + 1,
-					amount: item.amount,
-					text: item.text,
-				}),
-			);
-		},
-		deleteTransaction(id: number) {
-			const item = self.transactions.find((x) => x.id === id);
-			if (item) {
-				self.transactions.remove(item);
+		// The recommended way to write asynchronous actions is by using flow and generators
+		// https://mobx-state-tree.js.org/concepts/async-actions
+		getTransactions: flow(function* getTransactions() {
+			self.error = null;
+			self.loading = true;
+
+			try {
+				const response = yield axios.get('/api/v1/transactions');
+				self.transactions = response?.data?.data || [];
+				self.error = null;
+			} catch (error: any) {
+				self.error = error?.response?.data?.message || 'Could not load transactions';
+			} finally {
+				self.loading = false;
 			}
-		},
+		}),
+		addTransaction: flow(function* addTransaction(transaction: Omit<ITransaction, 'id'>) {
+			const config = {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			};
+
+			try {
+				const response = yield axios.post('/api/v1/transactions', transaction, config);
+				const createdtransaction = response?.data?.data;
+
+				if (createdtransaction) {
+					self.transactions.push(createdtransaction);
+				}
+				self.error = null;
+			} catch (error: any) {
+				self.error = error?.response?.data?.message || 'Could not create transaction';
+			}
+		}),
+		deleteTransaction: flow(function* deleteTransaction(id: number) {
+			try {
+				yield axios.delete(`/api/v1/transactions/${id}`);
+				self.error = null;
+				self.transactions.replace(self.transactions.filter((x) => x.id !== id));
+			} catch (error: any) {
+				self.error = error?.response?.data?.message || 'Could not delete transaction';
+			}
+		}),
 	}));
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface ITransactionsContext extends Instance<typeof TransactionsStore> {}
 
 export const store = TransactionsStore.create({
-	transactions: [
-		TransactionModel.create({
-			id: 1,
-			text: 'test',
-			amount: 10,
-		}),
-	],
+	// transactions: [
+	// 	TransactionModel.create({
+	// 		id: 1,
+	// 		text: 'test',
+	// 		amount: 10,
+	// 	}),
+	// ],
 });
 
 // Create context

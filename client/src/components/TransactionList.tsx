@@ -4,10 +4,10 @@ import { TransactionsContext } from '../context/TransactionsContext';
 import { TransactionItem } from './TransactionItem';
 
 export const TransactionList = observer(() => {
-	const { transactions, loading, error } = useContext(TransactionsContext);
+	const { transactions, loading, error, getTransactions } = useContext(TransactionsContext);
 
 	useEffect(() => {
-		// getTransactions();
+		getTransactions();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
