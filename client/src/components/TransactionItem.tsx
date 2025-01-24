@@ -1,8 +1,7 @@
 import { useContext } from 'react';
-import { TransactionsContext } from '../context/TransactionsContext';
-import { Transaction } from '../types/Transaction';
+import { ITransaction, TransactionsContext } from '../context/TransactionsContext';
 
-export const TransactionItem = ({ transaction }: { transaction: Transaction }) => {
+export const TransactionItem = ({ transaction }: { transaction: ITransaction }) => {
 	const { deleteTransaction } = useContext(TransactionsContext);
 	const sign = transaction.amount < 0 ? '-' : '';
 

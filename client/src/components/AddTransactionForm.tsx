@@ -1,7 +1,8 @@
+import { observer } from 'mobx-react';
 import { useContext, useState } from 'react';
 import { TransactionsContext } from '../context/TransactionsContext';
 
-export const AddTransactionForm = () => {
+export const AddTransactionForm = observer(() => {
 	const { addTransaction } = useContext(TransactionsContext);
 	const [text, setText] = useState('');
 	const [amount, setAmount] = useState(0);
@@ -11,6 +12,7 @@ export const AddTransactionForm = () => {
 		const newTransaction = {
 			text,
 			amount,
+			date: null,
 		};
 		addTransaction(newTransaction);
 		setText('');
@@ -46,4 +48,4 @@ export const AddTransactionForm = () => {
 			</form>
 		</>
 	);
-};
+});

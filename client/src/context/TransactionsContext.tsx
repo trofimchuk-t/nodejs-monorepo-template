@@ -1,97 +1,73 @@
-import axios from 'axios';
-import React, { createContext, useMemo, useReducer } from 'react';
-import { Transaction } from '../types/Transaction';
-import TransactionsReducer, { ActionType, TransactionState } from './TransactionsReducer';
+import { Instance, types } from 'mobx-state-tree';
+import { createContext } from 'react';
 
-interface Context {
-	transactions: Transaction[];
-	error: any;
-	loading: boolean;
-	getTransactions: () => Promise<void>;
-	deleteTransaction: (id: number) => Promise<void>;
-	addTransaction: (transaction: Omit<Transaction, 'id'>) => Promise<void>;
-}
+const TransactionModel = types.model({
+	id: types.identifierNumber,
+	amount: types.number,
+	date: types.maybeNull(types.string),
+	text: types.string,
+});
 
-// Initial State
-const initialState: TransactionState = {
-	transactions: [],
-	error: null,
-	loading: true,
-};
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface ITransaction extends Instance<typeof TransactionModel> {}
+
+const TransactionsStore = types
+	.model('TransactionsStore', {
+		loading: false,
+		error: types.maybeNull(types.string),
+		transactions: types.array(TransactionModel),
+	})
+	.views((self) => ({
+		get totalAmount() {
+			return self.transactions.reduce((acc, item) => (acc += item.amount), 0).toFixed(2);
+		},
+		get totalExpense() {
+			return (
+				self.transactions.filter((item) => item.amount < 0).reduce((acc, item) => (acc += item.amount), 0) * -1
+			).toFixed(2);
+		},
+		get totalIncome() {
+			return self.transactions
+				.filter((item) => item.amount > 0)
+				.reduce((acc, item) => (acc += item.amount), 0)
+				.toFixed(2);
+		},
+	}))
+	.actions((self) => ({
+		addTransaction(item: Omit<ITransaction, 'id'>) {
+			self.transactions.push(
+				TransactionModel.create({
+					id: self.transactions.reduce((a, b) => Math.max(a, b.id), 0) + 1,
+					amount: item.amount,
+					text: item.text,
+				}),
+			);
+		},
+		deleteTransaction(id: number) {
+			const item = self.transactions.find((x) => x.id === id);
+			if (item) {
+				self.transactions.remove(item);
+			}
+		},
+	}));
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+interface ITransactionsContext extends Instance<typeof TransactionsStore> {}
+
+export const store = TransactionsStore.create({
+	transactions: [
+		TransactionModel.create({
+			id: 1,
+			text: 'test',
+			amount: 10,
+		}),
+	],
+});
 
 // Create context
-export const TransactionsContext = createContext<Context>(null!);
+export const TransactionsContext = createContext<ITransactionsContext>(null!);
 
 // Provider component
 export const TransactionsProvider = ({ children }: React.PropsWithChildren) => {
-	const [state, dispatch] = useReducer(TransactionsReducer, initialState);
-
-	// Actions
-	async function getTransactions() {
-		try {
-			const response = await axios.get('/api/v1/transactions');
-
-			dispatch({
-				type: ActionType.GET_TRANSACTIONS,
-				payload: response.data.data,
-			});
-		} catch (err: any) {
-			dispatch({
-				type: ActionType.TRANSACTIONS_ERROR,
-				payload: err.response.data.error,
-			});
-		}
-	}
-
-	async function deleteTransaction(id: number) {
-		try {
-			await axios.delete(`/api/v1/transactions/${id}`);
-
-			dispatch({
-				type: ActionType.DELETE_TRANSACTION,
-				payload: { id },
-			});
-		} catch (err: any) {
-			dispatch({
-				type: ActionType.TRANSACTIONS_ERROR,
-				payload: err.response.data.error,
-			});
-		}
-	}
-
-	async function addTransaction(transaction: Omit<Transaction, 'id'>) {
-		const config = {
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		};
-
-		try {
-			const response = await axios.post('/api/v1/transactions', transaction, config);
-
-			dispatch({
-				type: ActionType.ADD_TRANSACTION,
-				payload: response.data.data,
-			});
-		} catch (err: any) {
-			dispatch({
-				type: ActionType.TRANSACTIONS_ERROR,
-				payload: err.response.data.error,
-			});
-		}
-	}
-
-	const contextObj = useMemo(
-		() => ({
-			transactions: state.transactions,
-			error: state.error,
-			loading: state.loading,
-			getTransactions,
-			deleteTransaction,
-			addTransaction,
-		}),
-		[state.error, state.loading, state.transactions],
-	);
-
-	return <TransactionsContext.Provider value={contextObj}>{children}</TransactionsContext.Provider>;
+	return <TransactionsContext.Provider value={store}>{children}</TransactionsContext.Provider>;
 };
