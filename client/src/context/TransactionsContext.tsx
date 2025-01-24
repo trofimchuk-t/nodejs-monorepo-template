@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { action, computed, makeObservable, observable } from 'mobx';
-import { createContext } from 'react';
+import { createContext, useMemo } from 'react';
 import { Transaction } from '../types/Transaction';
 
 interface Context {
@@ -101,3 +101,9 @@ export class TransactionsStore implements Context {
 
 // Create context
 export const TransactionsContext = createContext<Context>(null!);
+
+// Provider component
+export const TransactionsProvider = ({ children }: React.PropsWithChildren) => {
+	const transactionsStore = useMemo(() => new TransactionsStore(), []);
+	return <TransactionsContext.Provider value={transactionsStore}>{children}</TransactionsContext.Provider>;
+};
